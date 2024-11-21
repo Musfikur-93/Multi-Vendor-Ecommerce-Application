@@ -24,7 +24,7 @@
 	<link rel="stylesheet" href="{{asset('adminbackend/assets/css/dark-theme.css')}}" />
 	<link rel="stylesheet" href="{{asset('adminbackend/assets/css/semi-dark.css')}}" />
 	<link rel="stylesheet" href="{{asset('adminbackend/assets/css/header-colors.css')}}" />
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
     <link href="https://cdn.jsdelivr.net/npm/rich-text-editor-vj@3.0.6/css/froala_editor.min.css" rel="stylesheet">
 	<!-- DataTable CSS -->
 	<link href="{{asset('adminbackend/assets/plugins/datatable/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet" />

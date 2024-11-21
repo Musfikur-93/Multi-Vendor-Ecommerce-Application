@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use Auth;
 
+
 class CartController extends Controller
 {
     public function AddToCart(Request $request, $id){
@@ -254,7 +255,9 @@ class CartController extends Controller
                 $cartQty = Cart::count();
                 $cartTotal = Cart::total();
 
-                return view('frontend.checkout.checkout_view',compact('carts','cartQty','cartTotal'));
+                $division = ShipDivision::orderBy('division_name','ASC')->get();
+
+                return view('frontend.checkout.checkout_view',compact('carts','cartQty','cartTotal','division'));
 
             }else{
                 $notification = array(
