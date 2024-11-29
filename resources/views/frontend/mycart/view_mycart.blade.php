@@ -58,7 +58,7 @@
                             <div class="p-40" id="couponField">
                                 <h4 class="mb-10">Apply Coupon</h4>
                                 <p class="mb-30"><span class="font-lg text-muted">Using A Promo Code?</p>
-                                <form action="#">
+                                <form>
                                     <div class="d-flex justify-content-between">
 
                                         <input class="font-medium mr-15 coupon" id="coupon_name" placeholder="Enter Your Coupon">

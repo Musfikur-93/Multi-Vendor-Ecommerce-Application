@@ -661,6 +661,7 @@
 //-- ------------------------ Start Wishlist Remove Script ----------------------------- --
 
 function compareRemove(id){
+
         $.ajax({
             type: 'GET',
             url: '/compare-remove/'+id,
@@ -943,19 +944,18 @@ function cartIncrement(rowId){
                           <h6 class="text-muted">Coupon </h6>
                       </td>
                       <td class="cart_total_amount">
-                            <h6 class="text-brand text-end text-danger">${data.coupon_name} <a type="submit" onclick="couponRemove()"><i class="fi-rs-trash"></i> </a> </h6>
+                            <h6 class="text-brand text-end text-danger">${data.coupon_name} <a type="submit" onclick="couponRemove()"><i class="fi-rs-trash"></i> </a></h6>
                       </td>
                   </tr>
 
                   <tr>
                       <td class="cart_total_label">
-                          <h6 class="text-muted">Discount Amount  </h6>
+                          <h6 class="text-muted">Discount Amount </h6>
                       </td>
                       <td class="cart_total_amount">
                             <h4 class="text-brand text-end">$${data.discount_amount}</h4>
                       </td>
                   </tr>
-
 
                   <tr>
                       <td class="cart_total_label">

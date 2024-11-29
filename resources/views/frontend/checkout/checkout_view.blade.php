@@ -1,6 +1,9 @@
 @extends('frontend.master_dashboard')
 @section('main')
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
             <div class="page-header breadcrumb-wrap">
                 <div class="container">
                     <div class="breadcrumb">
@@ -19,12 +22,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-7">
+                <div class="col-lg-7">
 
-            <div class="row">
-            <h4 class="mb-30">Billing Details</h4>
-            <form method="post">
+                <div class="row">
+                <h4 class="mb-30">Billing Details</h4>
 
+
+             <form action="{{ route('checkout.store') }}" method="post">
+                @csrf
 
                 <div class="row">
                     <div class="form-group col-lg-6">
@@ -55,13 +60,7 @@
                 <div class="row shipping_calculator">
                     <div class="form-group col-lg-6">
                         <div class="custom_select">
-                            <select class="form-control select-active">
-                                <option value="">Select an option...</option>
-                                <option value="AX">Aland Islands</option>
-                                <option value="AF">Afghanistan</option>
-                                <option value="AL">Albania</option>
-                                <option value="DZ">Algeria</option>
-                                <option value="AD">Andorra</option>
+                            <select name="district_id" class="form-control">
 
                             </select>
                         </div>
@@ -72,21 +71,15 @@
                     </div>
                 </div>
 
-
                 <div class="row shipping_calculator">
                     <div class="form-group col-lg-6">
                         <div class="custom_select">
-                            <select class="form-control select-active">
-                                <option value="">Select an option...</option>
-                                <option value="AX">Aland Islands</option>
-                                <option value="AF">Afghanistan</option>
-                                <option value="AL">Albania</option>
-                                <option value="DZ">Algeria</option>
-                                <option value="AD">Andorra</option>
+                            <select name="state_id" class="form-control">
 
                             </select>
                         </div>
                     </div>
+
                     <div class="form-group col-lg-6">
                         <input required="" type="text" name="shipping_address" placeholder="Address *" value="{{ Auth::user()->address }}">
                     </div>
@@ -95,8 +88,6 @@
                 <div class="form-group mb-30">
                     <textarea rows="5" placeholder="Additional information" name="notes"></textarea>
                 </div>
-
-            </form>
         </div>
     </div>
 
@@ -151,7 +142,7 @@
 
             <tr>
                 <td class="cart_total_label">
-                    <h6 class="text-muted">Coupn Name</h6>
+                    <h6 class="text-muted">Coupon Name</h6>
                 </td>
                 <td class="cart_total_amount">
                     <h6 class="text-brand text-end">{{ session()->get('coupon')['coupon_name'] }} (${{ session()->get('coupon')['coupon_discount'] }})</h6>
@@ -195,15 +186,18 @@
                 <h4 class="mb-30">Payment</h4>
                 <div class="payment_option">
                     <div class="custome-radio">
-                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">
-                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Direct Bank Transfer</label>
+                        <input class="form-check-input" required="" type="radio" value="stripe" name="payment_option" id="exampleRadios3" checked="">
+
+                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Stripe</label>
                     </div>
                     <div class="custome-radio">
-                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios4" checked="">
+                        <input class="form-check-input" required="" type="radio" value="cash" name="payment_option" id="exampleRadios4" checked="">
+
                         <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Cash on delivery</label>
                     </div>
                     <div class="custome-radio">
-                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios5" checked="">
+                        <input class="form-check-input" required="" type="radio" value="card" name="payment_option" id="exampleRadios5" checked="">
+
                         <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Online Getway</label>
                     </div>
                 </div>
@@ -213,12 +207,63 @@
                     <img class="mr-15" src="{{ asset('frontend/assets/imgs/theme/icons/payment-master.svg') }}" alt="">
                     <img src="{{ asset('frontend/assets/imgs/theme/icons/payment-zapper.svg') }}" alt="">
                 </div>
-                <a href="#" class="btn btn-fill-out btn-block mt-30">Place an Order<i class="fi-rs-sign-out ml-15"></i></a>
+                <button type="submit" class="btn btn-fill-out btn-block mt-30">Place an Order<i class="fi-rs-sign-out ml-15"></i></button>
             </div>
         </div>
     </div>
 </div>
 
+</form>
+
+
+<script type="text/javascript">
+
+        $(document).ready(function(){
+  			$('select[name="division_id"]').on('change', function(){
+  				var division_id = $(this).val();
+  				if (division_id) {
+  					$.ajax({
+  						url: "{{ url('/district-get/ajax') }}/"+division_id,
+  						type: "GET",
+  						dataType:"json",
+  						success:function(data){
+  							$('select[name="district_id"]').html('');
+  							var d =$('select[name="district_id"]').empty();
+  							$.each(data, function(key, value){
+  								$('select[name="district_id"]').append('<option value="'+ value.id + '">' + value.district_name + '</option>');
+  							});
+  						},
+  					});
+  				} else {
+  					alert('danger');
+  				}
+  			});
+  		});
+
+        // Show State Data
+          $(document).ready(function(){
+  			$('select[name="district_id"]').on('change', function(){
+  				var district_id = $(this).val();
+  				if (district_id) {
+  					$.ajax({
+  						url: "{{ url('/state-get/ajax') }}/"+district_id,
+  						type: "GET",
+  						dataType:"json",
+  						success:function(data){
+  							$('select[name="state_id"]').html('');
+  							var d =$('select[name="state_id"]').empty();
+  							$.each(data, function(key, value){
+  								$('select[name="state_id"]').append('<option value="'+ value.id + '">' + value.state_name + '</option>');
+  							});
+  						},
+  					});
+  				} else {
+  					alert('danger');
+  				}
+  			});
+  		});
+
+</script>
 
 
 
